@@ -10,6 +10,18 @@ const app = {
     };
   },
   methods: {
+    checkAdmin() {
+      const url = `${this.baseUrl}/api/user/check`;
+      axios
+        .post(url)
+        .then(() => {
+          this.getProduct();
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
+          window.location = "login.html";
+        });
+    },
     getProduct() {
       const url = `${this.baseUrl}/api/${this.api_path}/admin/products`;
       axios
@@ -29,12 +41,12 @@ const app = {
         /(?:(?:^|.*;\s*)loginToken\s*=\s*([^;]*).*$)|^.*$/,
         "$1"
       );
-      axios.defaults.headers.common["Authorization"] = token;
+      axios.defaults.headers.common.Authorization = token;
     },
   },
   mounted() {
     this.getToken();
-    this.getProduct();
+    this.checkAdmin();
   },
 };
 
